@@ -1,31 +1,29 @@
-(ns send-phone-api.websocket-handlers
+(ns send-phone-api.socket.websocket-handlers
   (:require [org.httpkit.server :refer (send! on-close with-channel on-receive)]
-
             [clojure.tools.logging :refer [info]]
+            [send-phone-api.socket.websocket-clients :refer [get-all-websockets get_websocket add-websocket! remove-websocket!]]
 
             [clojure.data.json :refer [read-str json-str read-json write-str]]
             )
-  (:gen-class))
-
-(def clients (atom {}))
+ )
 
 
-(defn get-all-active-sockets []
 
-  @clients
+(defn send-to [socket msg]
+
+  (send! (:channel socket) msg)
+
   )
-
 
 (defn send-to-client-socket [client-id msg]
 
-  (info client-id)
-  (doseq [client (vals (get-all-active-sockets))]
-    ;; send all, client will filter them
-    (info client)
-    (info (:id client))
-    (info (:channel client))
+  (let [ socket (get_websocket client-id)  ]
 
-    (if (= client-id (:id client)) (send! (:channel client) msg) (println "check again"))))
+    (if (not-empty socket) (send-to socket msg))
+
+    (not-empty socket)
+
+    ))
 
 
 
@@ -40,29 +38,20 @@
       )))
 
 
+
 (defn socket-handler [id req]
 
   (info id "connected")
 
   (with-channel req channel
                 (info channel "connected")
-                (swap! clients assoc id {:id id :channel channel})
+                (add-websocket! id channel)
                 (on-receive channel (fn [msg]
                                       (message-received msg channel)
                                       ))
                 (on-close channel (fn [status]
-                                    (swap! clients dissoc id)
+                                    (remove-websocket! id)
                                     (info channel "closed, status" status)))))
 
 
-(defn get-dummy-channel []
 
-  {:channel "dummuy"}
-  )
-
-(defn test-socket-handler [id req]
-
-  (info id "connected")
-  (swap! clients assoc id {:id id :channel (get-dummy-channel)})
-
-  )
