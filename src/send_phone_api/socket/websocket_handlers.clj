@@ -11,19 +11,32 @@
 
 (defn send-to [socket msg]
 
-  (send! (:channel socket) msg)
+  (send! (:channel socket) (write-str msg) )
 
   )
 
+(defn validate-and-send [client-id socket msg]
+  ;
+  (let [action (:action msg)]
+
+
+    )
+  (send-to socket msg)
+  )
 (defn send-to-client-socket [client-id msg]
 
   (let [ socket (get_websocket client-id)  ]
 
-    (if (not-empty socket) (send-to socket msg))
+    (if (not-empty socket)  (validate-and-send client-id socket msg) )
 
     (not-empty socket)
 
     ))
+
+(defn socket-exists [client-id]
+
+  (not-empty (get_websocket client-id))
+  )
 
 
 

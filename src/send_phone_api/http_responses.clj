@@ -9,6 +9,11 @@
    :headers {"Content-Type" "text/json"}
    :body    (write-str msg)})
 
+(defn success-raw [msg]
+  {:status  200
+   :headers {"Content-Type" "text/json"}
+   :body    msg})
+
 (defn success-string [msg]
   {:status  200
    :headers {"Content-Type" "text/json"}
@@ -17,4 +22,4 @@
 (defn bad-request [msg]
   {:status  400
    :headers {"Content-Type" "text/json"}
-   :body    msg})
+   :body    (write-str {:msg msg})})

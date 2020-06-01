@@ -1,1 +1,1 @@
-lein auto with-profile dev test
+lein with-profile dev test
