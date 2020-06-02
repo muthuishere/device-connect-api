@@ -1,0 +1,18 @@
+Validate webscoket connect id
+
+on each message 
+	update last-message-time 
+
+
+
+Quartz Scheduler
+	remove idle sockets for more than 24 hours
+	remove not logged in sockets for more than 1 hour
+	
+	
+	
+	
+Action
+		logout
+		remove-socket-client
+		close-channel	

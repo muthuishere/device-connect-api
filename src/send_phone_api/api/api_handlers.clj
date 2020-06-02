@@ -26,7 +26,7 @@
   )
 
 (defn get-all-sessions [req]
-  (success-json (sessions/get-all-sessions))
+  (success-raw (sessions/get-all-sessions))
   )
 
 
@@ -38,22 +38,6 @@
   )
 
 
-(defn login-to-websocket [input]
-
-
-                    (let [
-                          id (:id input)
-                          message (:message input)
-
-                          ]
-
-                      (info "id "  id )
-                      (info "send-to-websocket message "  message )
-
-                      (if (socket-exists id)
-                        (put-to-queue id message)
-                        (bad-request "Invalid Client id"))
-                      ))
 
 (defn send-to-websocket [input]
 

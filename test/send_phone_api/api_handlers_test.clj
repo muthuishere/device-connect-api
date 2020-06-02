@@ -4,7 +4,7 @@
             [send-phone-api.api.api-handlers :refer [create-session get-all-sessions send-to-websocket]]
             [send-phone-api.socket.websocket-handlers :refer [socket-handler send-to]]
             [send-phone-api.mocks :as mock-api]
-            [send-phone-api.mocks :refer [create-socket create-sockets!]]
+            [send-phone-api.mocks :refer [create-test-socket! create-test-sockets!]]
             [send-phone-api.socket.worker :refer [init-socket-channel]]
             [send-phone-api.socket.websocket-clients :refer [add-websocket! get-all-websockets] ]
             [ring.mock.request :as mock]
@@ -34,7 +34,7 @@
 (deftest test-send-to-websocket-with-valid-should-send-message
   (testing "Sending to client with existing channel should send data"
 
-   (create-sockets!)
+   (create-test-sockets!)
    (with-redefs [send-to (fn [socket msg] {})]
    (let [ response  (send-to-websocket {:id "21" :message "hello"})]
 
@@ -48,7 +48,7 @@
 (deftest sending-client-with-invalid
   (testing "Sending to client with invalid id should throw error"
 
-   (create-sockets!)
+   (create-test-sockets!)
    (with-redefs [send-to (fn [socket msg]
                            (info "dummy" msg)
                            {})]
@@ -66,7 +66,7 @@
 (deftest test-current
   (testing "Sending client with valid id should send data"
 
-   (create-sockets!)
+   (create-test-sockets!)
    (init-socket-channel)
    (with-redefs [send-to (fn [socket msg]
                            (info "dummy" msg)

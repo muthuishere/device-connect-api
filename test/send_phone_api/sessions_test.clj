@@ -48,7 +48,10 @@
       (is (empty (sessions/get-session sessionId)))
 
 
-      )))
+
+
+
+    )))
 
 
 (deftest test-remove-session-on-non-existent-session

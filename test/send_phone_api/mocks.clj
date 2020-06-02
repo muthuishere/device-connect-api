@@ -5,7 +5,7 @@
     [send-phone-api.socket.websocket-clients :as socket-clients ]
     ))
 
-(defn create-socket [name]
+(defn create-test-socket! [name]
 
   {:send! (fn [req]
             (info "sending " name)
@@ -21,11 +21,23 @@
   "ar"
   )
 
-(defn create-sockets! []
+(defn create-test-sockets! []
 
   (doseq [id (get-test-socket-ids)          ]
 
-    (socket-clients/add-websocket! id (create-socket id))
+    (socket-clients/add-websocket! id (create-test-socket! id))
+
+         )
+
+
+  )
+
+
+(defn create-test-sessions! []
+
+  (doseq [id (get-test-socket-ids)          ]
+
+    (socket-clients/add-websocket! id (create-test-socket! id))
 
          )
 

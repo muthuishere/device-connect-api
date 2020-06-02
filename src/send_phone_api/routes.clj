@@ -3,7 +3,7 @@
                                       [clojure.tools.logging :refer [info]]
                                       [clojure.data.json :refer (read-str)]
                                       [compojure.route :as route]
-                                      [send-phone-api.api.api-handlers :refer [login-to-websocket send-to-websocket get-all-websockets create-session ]]
+                                      [send-phone-api.api.api-handlers :refer [send-to-websocket get-all-websockets create-session get-all-sessions ]]
                                       [send-phone-api.socket.websocket-handlers :refer [socket-handler]]
                                      )
 )
@@ -41,17 +41,9 @@
                                             (info "body "  message )
                                              (send-to-websocket {:id id :message message})
                                              )))
-           (POST "/authenticate/:id" [] (fn [req]
 
-                                            (let [
-                                                  id (:id (:params req))
-                                                  message (parse (:body req))
-
-                                                  ]
-
-                                             (login-to-websocket {:id id :message message})
-                                             )))
            (GET "/createsession" []  create-session)
            (GET "/get-all-websockets" []  get-all-websockets)
+           (GET "/get-all-sessions" []  get-all-sessions)
 
            (route/not-found "Error, page not found!"))
