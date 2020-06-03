@@ -1,9 +1,9 @@
-(ns send-phone-api.websockets-test
+(ns send-phone-api.socket.websocket-clients-test
   (:require [clojure.test :refer :all]
             [send-phone-api.socket.websocket-clients :as websocket-clients]
-            [ring.mock.request :as mock]
+            [send-phone-api.mocks.shared :refer :all]
+
             [clojure.tools.logging :refer [info]]
-            [send-phone-api.mocks :refer [create-test-socket! create-test-sockets! get-test-socket-ids get-a-test-socket-id]]
             ))
 
 
@@ -26,13 +26,13 @@
 (deftest test-find-socket
   (testing "creating sockets and finding them should retrieve it"
     (create-test-sockets!)
-      (doseq [id (get-test-socket-ids)          ]
+    (doseq [id (get-test-socket-ids)          ]
 
-         (is (not-empty  (websocket-clients/get_websocket id )))
+      (is (not-empty  (websocket-clients/get_websocket id )))
 
-        )
+      )
 
-      ))
+    ))
 
 (deftest test-socket-status-update
   (testing "creating sockets and updating it"
@@ -54,10 +54,10 @@
 
       )
 
-      ))
+    ))
 
 
-(deftest test-current
+(deftest test-create-sockets-and-remove
   (testing "creating sockets and removing it"
     (create-test-sockets!)
 
@@ -76,4 +76,20 @@
       (is (empty  (websocket-clients/get_websocket socket-id )))
       )
 
-      ))
+    ))
+
+(deftest test-creating-sockets-for-valid-session
+  (testing "creating sockets for only valid sessions"
+
+    (create-test-sockets!)
+    (let [sockets (websocket-clients/get-all-websockets)]
+
+
+
+      (is (= 2  (.size sockets)))
+
+
+
+      )))
+
+

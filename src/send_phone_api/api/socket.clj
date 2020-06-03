@@ -1,4 +1,4 @@
-(ns send-phone-api.api.api-handlers
+(ns send-phone-api.api.socket
   (:require
     [clojure.data.json :refer (write-str)]
     [clojure.tools.logging :refer [info]]
@@ -9,25 +9,10 @@
     [send-phone-api.http_responses :refer [success-json success-string bad-request success-raw]]
     ))
 
-
-
-
-(defn create-session [req]
-  (info req)
-
-  (let [response (sessions/create-session)]
-    (sessions/add-to-global-session create-session)
-    (info response)
-    (success-json response)
-    ))
-
 (defn get-all-websockets [req]
   (success-raw (websockets/get-all-websockets))
   )
 
-(defn get-all-sessions [req]
-  (success-raw (sessions/get-all-sessions))
-  )
 
 
 (defn put-to-queue [id message]
@@ -54,7 +39,6 @@
     (if (socket-exists id)
       (put-to-queue id message)
       (bad-request "Invalid Client id"))
-  ))
-
+    ))
 
 

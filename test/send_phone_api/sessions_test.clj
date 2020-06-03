@@ -2,15 +2,11 @@
   (:require [clojure.test :refer :all]
             [clojure.tools.logging :refer [info]]
             [send-phone-api.sessions :as sessions]
-            [ring.mock.request :as mock]))
+           ))
 
 
 
-(defn mock-request []
 
-  (mock/request :get "/doc/10")
-
-  )
 
 (deftest verify-create-session
   (testing "creating session should get session id"

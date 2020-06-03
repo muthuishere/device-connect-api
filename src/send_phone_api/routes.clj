@@ -3,7 +3,8 @@
                                       [clojure.tools.logging :refer [info]]
                                       [clojure.data.json :refer (read-str)]
                                       [compojure.route :as route]
-                                      [send-phone-api.api.api-handlers :refer [send-to-websocket get-all-websockets create-session get-all-sessions ]]
+                                      [send-phone-api.api.socket :refer :all]
+                                      [send-phone-api.api.session :refer :all]
                                       [send-phone-api.socket.websocket-handlers :refer [socket-handler]]
                                      )
 )
@@ -36,9 +37,6 @@
 
                                                   ]
 
-
-                                            (info "id "  id )
-                                            (info "body "  message )
                                              (send-to-websocket {:id id :message message})
                                              )))
 
