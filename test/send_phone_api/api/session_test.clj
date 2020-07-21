@@ -8,7 +8,7 @@
 
 (deftest verify-create-session
   (testing "creating session should get session id"
-    (let [mockRequest (mock-request)
+    (let [mockRequest (get-a-mock-request)
           value (create-session mockRequest)]
 
       (is (not-empty value))

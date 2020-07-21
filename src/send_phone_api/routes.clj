@@ -5,15 +5,13 @@
                                       [compojure.route :as route]
                                       [send-phone-api.api.socket :refer :all]
                                       [send-phone-api.api.session :refer :all]
-                                      [send-phone-api.socket.websocket-handlers :refer [socket-handler]]
+                                      [send-phone-api.socket.handler :refer [socket-handler open-socket]]
                                      )
 )
 
 (defn parse [body]
 
   (let [ js-string  (.trim (slurp body))]
-
-    (info js-string)
 
     (if-not (clojure.string/blank? js-string)
 
@@ -29,7 +27,8 @@
            (GET "/websocket/:id" [id] (fn [req]
                                         (socket-handler id req)
                                         ))
-           (POST "/send-to-client/:id" [] (fn [req]
+
+           (POST "/send-toclient/:id" [] (fn [req]
 
                                             (let [
                                                   id (:id (:params req))
@@ -39,8 +38,7 @@
 
                                              (send-to-websocket {:id id :message message})
                                              )))
-
-           (GET "/createsession" []  create-session)
+           (GET "/register" []  create-session)
            (GET "/get-all-websockets" []  get-all-websockets)
            (GET "/get-all-sessions" []  get-all-sessions)
 

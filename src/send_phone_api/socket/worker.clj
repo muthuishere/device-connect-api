@@ -3,7 +3,7 @@
              :refer [>! <! >!! <!! go chan buffer close! thread
                      alts! alts!! take! put! timeout go-loop]]
             [clojure.tools.logging :refer [info]]
-            [send-phone-api.socket.websocket-handlers :refer [send-to-client-socket]]
+            [send-phone-api.socket.handler :refer [send-to-client-socket]]
             )
   (:gen-class))
 

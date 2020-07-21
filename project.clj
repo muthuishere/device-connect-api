@@ -16,7 +16,7 @@
                  [org.clojure/clojure "1.10.0"]
                  [org.clojure/core.async "1.2.603"]
                  [org.clojure/tools.namespace "1.0.0"]
-
+                 [ring/ring-devel "1.8.1"]
                  [compojure "1.6.1"]
 
                  ; Our Http library for client/server
@@ -24,15 +24,25 @@
                  ; Ring defaults - for query params etc
                  [ring/ring-defaults "0.3.2"]
                  ; Clojure data.JSON library
-                 [org.clojure/data.json "0.2.6"]
+                 [org.clojure/data.json "1.0.0"]
                  [org.clojure/tools.logging "0.2.3"]
                  ]
 
-  :plugins [[lein-auto "0.1.3"]
+  :repl-options {
+
+                 :init-ns send-phone-api.routes
+                 }
+
+                 :plugins [[lein-auto "0.1.3"]
             [lein-cloverage "1.1.2"]]
   :main ^:skip-aot send-phone-api.core
   :target-path "target/%s"
-  :profiles {:dev {:dependencies [
+
+
+
+  :profiles {:dev {
+                   :main send-phone-api.core/-dev-main
+                   :dependencies [
                                   [ring/ring-mock "0.4.0"]
 
 

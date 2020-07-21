@@ -3,22 +3,30 @@
             [send-phone-api.api.socket :refer :all]
             [send-phone-api.mocks.shared :refer :all]
             [clojure.tools.logging :refer [info]]
-            [send-phone-api.socket.websocket-handlers :as websocket-handlers]
+            [send-phone-api.socket.handler :as websocket-handlers]
             [send-phone-api.socket.worker :as worker]
             ))
 
 
 
-(defmacro  with-mock-send-to []
-
-   [websocket-handlers/send-to (fn [socket msg] {})]
+(defn test-setup [f]
+  (create-test-sockets!)
+  (with-redefs [websocket-handlers/send-to (fn [socket msg] (info "dummy " msg) { })]
+  (f)
   )
+  (close-test-sockets!)
+  )
+
+; Here we register my-test-fixture to be called once, wrapping ALL tests
+; in the namespace
+(use-fixtures :once test-setup)
+
 
 (deftest test-send-to-websocket-with-valid-should-send-message
   (testing "Sending to client with existing channel should send data"
 
-    (create-test-sockets!)
-    (with-redefs (with-mock-send-to)
+
+
       (let [ response  (send-to-websocket {:id "21" :message "hello"})]
 
         (info response)
@@ -26,14 +34,13 @@
 
 
 
-        ))))
+        )))
 
 
 (deftest sending-to-websocket-with-invalid
   (testing "Sending to client with invalid id should throw error"
 
-    (create-test-sockets!)
-    (with-redefs (with-mock-send-to)
+
       (let [ response  (send-to-websocket {:id "21" :message "hello"})]
 
         (info response)
@@ -42,23 +49,22 @@
 
 
 
-        ))))
+        )))
 
 
 
 (deftest send-to-websocket-should-receive-data
   (testing "Sending client with valid id should send data"
 
-    (create-test-sockets!)
     (worker/init-socket-channel)
-    (with-redefs (with-mock-send-to)
+
       (let [ response  (send-to-websocket {:id "ar" :message "hello"})]
         (info response)
 
 
         (is (.contains (:body response)  "message sent"))
         (is (= (:status response)  200))
-        (Thread/sleep 5000)
+        (Thread/sleep 500)
 
 
-        ))))
+        )))

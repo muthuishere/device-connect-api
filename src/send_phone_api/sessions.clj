@@ -16,7 +16,9 @@
   )
 
 
+
 (defn uuid []
+  ;Generate unique and allow validation
   (.toString (java.util.UUID/randomUUID))
   )
 
@@ -28,6 +30,7 @@
 
 (defn create-session []
 
+  ;{:sessionId "2021"   :time (System/currentTimeMillis)}
   {:sessionId (uuid)  :time (System/currentTimeMillis)}
   )
 
